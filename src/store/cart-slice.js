@@ -1,11 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const careInitialState = { items: [] };
+const careInitialState = { items: [], flag: true };
+// this flag is for the first time retriving data from database to repopulate the cart
+// it is intended to be used to prevent the sending of the data at the initial loading
+// and it will be changed whenever item added or removed to allow data sending
 
 const cartSlice = createSlice({
   name: 'cart',
   initialState: careInitialState,
   reducers: {
+    replaceCart(state, action) {
+      // this is typically used to populate cart data that user chose before
+      state.items = action.payload.items || [];
+    },
     addItem(state, action) {
       //the payload is expcted to be a whole product item
       const indexOfItemIfExistingInCart = state.items.findIndex(
@@ -23,6 +30,7 @@ const cartSlice = createSlice({
         state.items[indexOfItemIfExistingInCart].total +=
           state.items[indexOfItemIfExistingInCart].price;
       }
+      state.flag = false;
     },
 
     removeItem(state, action) {
@@ -37,6 +45,7 @@ const cartSlice = createSlice({
         state.items[indexOfItemIfExistingInCart].total -=
           state.items[indexOfItemIfExistingInCart].price;
       }
+      state.flag = false;
     },
   },
 });
