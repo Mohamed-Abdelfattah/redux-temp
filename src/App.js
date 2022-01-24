@@ -1,56 +1,28 @@
-import { useEffect, Fragment } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { Component } from 'react';
+import logo from './logo.svg';
+import './App.css';
 
-import Cart from './components/Cart/Cart';
-import Layout from './components/Layout/Layout';
-import Notification from './components/UI/Notification';
-import Products from './components/Shop/Products';
-import { sendCartDataThunk, fetchCartDataThunk } from './store/cart-actions';
-
-let initial = true;
-
-function App() {
-  //
-  const dispatch = useDispatch();
-  const renderCart = useSelector((state) => state.cartUiStateAtStore.showCart);
-  const cart = useSelector((state) => state.cartStateAtStore);
-  const showNotification = useSelector(
-    (state) => state.cartUiStateAtStore.notification
-  );
-
-  useEffect(() => {
-    //
-    dispatch(fetchCartDataThunk());
-  }, []);
-
-  useEffect(() => {
-    //
-    if (initial) {
-      initial = false;
-      return;
-    }
-
-    if (cart.flag) return;
-
-    dispatch(sendCartDataThunk(cart));
-    //
-  }, [cart, dispatch]);
-
-  return (
-    <Fragment>
-      {showNotification && (
-        <Notification
-          status={showNotification.status}
-          title={showNotification.title}
-          message={showNotification.message}
-        />
-      )}
-      <Layout>
-        {renderCart && <Cart />}
-        <Products />
-      </Layout>
-    </Fragment>
-  );
+class App extends Component {
+  render() {
+    return (
+      <div className="App">
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <p>
+            Edit <code>src/App.js</code> and save to reload.
+          </p>
+          <a
+            className="App-link"
+            href="https://reactjs.org"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Learn React
+          </a>
+        </header>
+      </div>
+    );
+  }
 }
 
 export default App;
